@@ -1,0 +1,50 @@
+- name: Create Realm
+  hosts: localhost
+  vars:
+    keycloak_url: "http://localhost:8080"
+    keycloak_user: "admin"
+    keycloak_password: "admin"
+    keycloak_realm: "test-realm"
+
+  tasks:
+    - name: Create or update Keycloak realm (minimal example)
+      community.general.keycloak_realm:
+        auth_keycloak_url: "http://localhost:8080"
+        auth_realm: master
+        auth_username: "admin"
+        auth_password: "admin"
+        realm: "test-realm"
+        state: present
+
+    - name: Create Test Client 1 
+      community.general.keycloak_client:
+        auth_keycloak_url: "http://localhost:8080"
+        auth_realm: master
+        auth_username: "admin"
+        auth_password: "admin"
+        client_id: "client-1"
+        realm: "test-realm"
+        state: present
+      delegate_to: localhost
+
+    - name: Create Test Client 2
+      community.general.keycloak_client:
+        auth_keycloak_url: "http://localhost:8080"
+        auth_realm: master
+        auth_username: "admin"
+        auth_password: "admin"
+        client_id: "client-2"
+        realm: "test-realm"
+        state: present
+      delegate_to: localhost
+
+    - name: Create Test Client 3 
+      community.general.keycloak_client:
+        auth_keycloak_url: "http://localhost:8080"
+        auth_realm: master
+        auth_username: "admin"
+        auth_password: "admin"
+        client_id: "client-3"
+        realm: "test-realm"
+        state: present
+      delegate_to: localhost
