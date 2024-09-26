@@ -19,8 +19,8 @@ jobs:
         uses: docker/setup-buildx-action@v3.6.1
 
       # Step 3: Set up Ansible
-      - name: Install Ansible
-        uses: alex-oleshkevich/setup-ansible@1.0.1
+      - name: Setup Ansible
+        uses: alex-oleshkevich/setup-ansible@v1.0.1
             
       # Step 4: Run Ansible Playbook
       - name: Run Ansible playbook
