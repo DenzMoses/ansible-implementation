@@ -1,0 +1,30 @@
+name: CI/CD Pipeline for Keycloak Deployment
+
+on:
+  push:
+    branches:
+      - main  # Trigger the pipeline when changes are pushed to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.0
+
+      # Step 2: Set up Docker (GitHub Marketplace action)
+      - name: Install Docker
+        uses: docker/setup-buildx-action@v3.6.1
+
+      # Step 3: Set up Ansible
+      - name: Setup Ansible
+        uses: alex-oleshkevich/setup-ansible@v1.0.1
+            
+      # Step 4: Run Ansible Playbook
+      - name: Run Ansible playbook
+        uses: dawidd6/action-ansible-playbook@v2.8.0
+        with:
+          playbook: playbook.yml  # Ansible playbook for Keycloak deployment
+          inventory: inventory.ini  # Inventory file defining the target server
