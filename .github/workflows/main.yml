@@ -14,25 +14,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.2.0
 
-      - name: Setup Keycloak Action
-        uses: Progi1984/setup-keycloak@v1.0.0
-        with:
-          keycloak_version: 22.0.3
-          keycloak_admin_user: admin_user
-          keycloak_admin_pass: admin_pass
-            
-      
-      # Step 2: Set up Docker (GitHub Marketplace action)
+      # Step 2: Install Docker
       - name: Install Docker
-        uses: docker/setup-buildx-action@v3.6.1
+        uses: docker/setup-docker@v2  # Set up Docker environment
 
-      # Step 3: Set up Ansible
+      # Step 3: Pull Keycloak Docker image and start Keycloak container
+      - name: Run Keycloak container
+        run: |
+          docker run -d \
+            --name keycloak \
+            -e KEYCLOAK_USER=admin \
+            -e KEYCLOAK_PASSWORD=admin_password \
+            -p 8080:8080 \
+            quay.io/keycloak/keycloak:22.0.3
+
+      # Step 4: Set up Ansible
       - name: Setup Ansible
         uses: alex-oleshkevich/setup-ansible@v1.0.1
-            
-      # Step 4: Run Ansible Playbook
+
+      # Step 5: Run Ansible Playbook to configure Keycloak and import realm configuration
       - name: Run Ansible playbook
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
-          playbook: ansible-implementation.yml  # Ansible playbook for Keycloak deployment
+          playbook: ansible-implementation.yml  # Your Ansible playbook to configure Keycloak
+
 
